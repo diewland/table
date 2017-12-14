@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>table.js - Demo</title>
+  </head>
+  <body>
+    <h1>table.js - Demo</h1>
+    <input id='update' type='button' value='UPDATE' />
+    <input id='reset' type='button' value='RESET' />
+    <br>
+    <br>
+    <table id='demo' border='1'>
+      <tr><th>Field 1</th><th>Field 2</th><th>Field 3</th></tr>
+      <tr><td>11</td><td>12</td><td>13</td></tr>
+      <tr><td>21</td><td>22</td><td>23</td></tr>
+      <tr><td>31</td><td>32</td><td>33</td></tr>
+    </table>
+    <script src='./table.js'></script>
+    <script>
+      var t = new Table('#demo');
+      var new_data = [
+        [ 11.1, 12,   13 ],
+        [ 21,   22.2, 23 ],
+        [ 31,   32,   33.3 ],
+        [ 41,   42,   43 ],
+      ];
+      // update table
+      document.querySelector('#update').addEventListener('click', function(){
+        t.update(new_data);
+      });
+      // reset button
+      document.querySelector('#reset').addEventListener('click', function(){
+        location.reload();
+      });
+    </script>
+  </body>
+</html>
