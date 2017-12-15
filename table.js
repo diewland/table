@@ -7,7 +7,6 @@ var Table = function(sel){
   var row_num;  // row number ( exclude header )
   var cpr;      // column number per row
   var color_from = "#00ff00"; // hilight cell from color
-  var color_to   = "#ffffff"; // hilight cell to color
 
   // ########## PRIVATE FUNCTION ##########
 
@@ -39,10 +38,11 @@ var Table = function(sel){
           + g.substring(g.length - 2)
           + b.substring(b.length - 2);
   }
-  this._fade_text = function(cl1, cl2, elm){
+  this._fade_text = function(cl1, elm){
     var t = [];
     var steps = 100;
     var delay = 1000;
+    var cl2   = '#FFFFFF'; // TODO detect color from elm
     for (var i = 0; i < steps; i++) {
       (function(j) {
            t[j] = setTimeout(function() {
@@ -68,7 +68,7 @@ var Table = function(sel){
           // value diff
           if(prev_val != col){
             prev_col.innerHTML = col;
-            that._fade_text(color_from, color_to, prev_col);
+            that._fade_text(color_from, prev_col);
           }
         });
       }
@@ -78,6 +78,7 @@ var Table = function(sel){
         row.forEach(function(col, cid){
           var c = r.insertCell(cid);
           c.innerHTML = col;
+          that._fade_text(color_from, c);
         });
       }
     });
