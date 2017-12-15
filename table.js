@@ -1,12 +1,15 @@
-
-var Table = function(sel){
+var Table = function(sel, options){
 
   var that = this;
   var tbl;      // table dom
   var cols;     // columns data
   var row_num;  // row number ( exclude header )
   var cpr;      // column number per row
-  var color_from = "#00ff00"; // hilight cell from color
+
+  options = options || {};
+  var from_color    = options.from_color || '#00ff00';
+  var to_color      = options.to_color   || '#ffffff';
+  var replace_mode  = options.replace === true;
 
   // ########## PRIVATE FUNCTION ##########
 
@@ -38,11 +41,10 @@ var Table = function(sel){
           + g.substring(g.length - 2)
           + b.substring(b.length - 2);
   }
-  this._fade_text = function(cl1, elm){
+  this._fade_text = function(cl1, cl2, elm){
     var t = [];
     var steps = 100;
     var delay = 1000;
-    var cl2   = '#FFFFFF'; // TODO detect color from elm
     for (var i = 0; i < steps; i++) {
       (function(j) {
            t[j] = setTimeout(function() {
@@ -68,21 +70,28 @@ var Table = function(sel){
           // value diff
           if(prev_val != col){
             prev_col.innerHTML = col;
-            that._fade_text(color_from, prev_col);
+            that._fade_text(from_color, to_color, prev_col);
           }
         });
       }
-      // add new row
-      else {
+      // handle replace mdoe, add new row
+      else if(replace_mode){
         var r = tbl.insertRow(rid + 1); // include header row
         row.forEach(function(col, cid){
           var c = r.insertCell(cid);
           c.innerHTML = col;
-          that._fade_text(color_from, c);
+          that._fade_text(from_color, to_color, c);
         });
       }
     });
     this._reload();
+
+    // handle replace mode, remove row
+    if(replace_mode && ( new_data.length < row_num )){
+      for(var i=row_num; i>new_data.length; i--){
+        tbl.deleteRow(i);
+      }
+    }
   }
 
   // ########## INITIALIZE ##########

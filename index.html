@@ -1,39 +1,62 @@
 <html>
   <head>
     <title>table.js - Demo</title>
-    <style>
-      td { background-color: #DDD; }
-    </style>
   </head>
   <body>
     <h1>table.js - Demo</h1>
-    <input id='update' type='button' value='UPDATE' />
-    <input id='reset' type='button' value='RESET' />
+    <input id='upd_3' type='button' value='Update 3 rows' />
+    <input id='upd_5' type='button' value='Update 5 rows' />
+    <br>
+    <input id='rpc_3' type='button' value='Replace 3 rows' />
+    <input id='rpc_5' type='button' value='Replace 5 rows' />
+    <br>
+    <input id='reset' type='button' value='Reset' />
     <br>
     <br>
     <table id='demo' border='1'>
       <tr><th>Field 1</th><th>Field 2</th><th>Field 3</th></tr>
-      <tr><td>11</td><td>12</td><td>13</td></tr>
-      <tr><td>21</td><td>22</td><td>23</td></tr>
-      <tr><td>31</td><td>32</td><td>33</td></tr>
+      <tr><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td></tr>
+      <tr><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td></tr>
     </table>
     <script src='./table.js'></script>
     <script>
-      var t = new Table('#demo');
-      var new_data = [
-        [ 11.1, 12,   13 ],
-        [ 21,   22.2, 23 ],
-        [ 31,   32,   33.3 ],
-        [ 41,   42,   43 ],
-      ];
-      // update table
-      document.querySelector('#update').addEventListener('click', function(){
-        t.update(new_data);
+
+      // random data function
+      function random_data(row_size, col_size){
+        var out = [];
+        for(var r=0; r<row_size; r++){
+          var row = [];
+          for(var c=0; c<col_size; c++){
+            row.push(Math.floor(Math.random()*2));
+          }
+          out.push(row);
+        }
+        return out;
+      }
+
+      // bind buttons
+      document.querySelector('#upd_3').addEventListener('click', function(){
+        var t = new Table('#demo');
+        t.update(random_data(3, 3));
       });
-      // reset button
+      document.querySelector('#upd_5').addEventListener('click', function(){
+        var t = new Table('#demo');
+        t.update(random_data(5, 3));
+      });
+      document.querySelector('#rpc_3').addEventListener('click', function(){
+        var t = new Table('#demo', { replace: true });
+        t.update(random_data(3, 3));
+      });
+      document.querySelector('#rpc_5').addEventListener('click', function(){
+        var t = new Table('#demo', { replace: true });
+        t.update(random_data(5, 3));
+      });
       document.querySelector('#reset').addEventListener('click', function(){
         location.reload();
       });
+
     </script>
   </body>
 </html>
